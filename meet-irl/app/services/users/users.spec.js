@@ -33,6 +33,14 @@ describe('Users factory', function() {
     }
   ];
 
+  var singleUser = {
+    id: '2',
+    name: 'Bob',
+    role: 'Developer',
+    location: 'New York',
+    twitter: 'billybob'
+  };
+
     // Before each test load our api.users module
   beforeEach(angular.mock.module('api.users'));
 
@@ -46,13 +54,27 @@ describe('Users factory', function() {
     expect(Users).toBeDefined();
   });
 
-  describe('all()', function() {
+  describe('.all()', function() {
   	it('should exist', function() {
   		expect(Users.all).toBeDefined();
   	});
 
   	it('should return hard-coded list of users', function() {
   		expect(Users.all()).toEqual(userList);
+  	});
+  });
+
+  describe('.findById()', function() {
+  	it('should exist', function() {
+  		expect(Users.findById).toBeDefined();
+  	});
+
+  	it('should return one user object', function() {
+  		expect(Users.findById('2')).toEqual(singleUser);
+  	});
+
+  	it('should return undefined', function() {
+  		expect(Users.findById('ABC')).not.toBeDefined();
   	});
   });
 });
