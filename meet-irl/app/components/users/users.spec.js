@@ -12,16 +12,29 @@ describe('UsersController', function() {
 	//load ui-router and components.user module that we'll upload next
 	beforeEach(angular.mock.module('ui.router'));
 	beforeEach(angular.mock.module('components.users'));
+	beforeEach(angular.mock.module('api.users'));
 
 	//inject the $controller service to create instances of the controller (UsersController) we want to test
-	beforeEach(inject(function(_$controller_) {
+	beforeEach(inject(function(_$controller_, _Users_) {
 		$controller = _$controller_;
-		UsersController = $controller('UsersController', {});
+		UsersFactory = _Users_;
+
+		spyOn(UsersFactory, 'all').and.callFake(function() {
+			return userList;
+		})
+
+
+		UsersController = $controller('UsersController', { User: UsersFactory });
 	}));
 
 	//verify our controller exists
 	it('should be defined', function() {
 		expect(UsersController).toBeDefined();
+	});
+
+	it('should initialize with a call to Users.all()', function() {
+		expect(UsersFactory.all).toHaveBeenCalled();
+		expect(UsersController.users).toEqual(userList);
 	});
 
 
