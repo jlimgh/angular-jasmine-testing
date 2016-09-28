@@ -2,9 +2,14 @@
 	'use strict';
 
 	angular.module('components.profile', [])
-	.controller('ProfileController', function(resolvedUser, Pokemon) { //add pokemon dependency
+	.controller('ProfileController', function(resolvedUser, Pokemon, $state) { //add pokemon dependency
 		var vm = this;
-		vm.user = resolvedUser;
+		
+		if (resolvedUser) {
+	      vm.user = resolvedUser;
+	    } else {
+	      return $state.go('404');
+	    }
 
 		// Call our Pokemon service using our resolved user's Pokemon
 		Pokemon.findByName(vm.user.pokemon.name)
